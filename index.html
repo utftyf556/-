@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>متجري</title>
-
+<title>متجري الاحترافي</title>
 <style>
 body{
 margin:0;
@@ -70,11 +69,26 @@ border:none;
 .closeBtn{
 background:red;
 }
+/* زر المالك ظاهر أعلى يسار */
+#adminBtn{
+position:fixed;
+top:10px;
+left:10px;
+background:#ff9800;
+padding:10px;
+border-radius:5px;
+font-weight:bold;
+cursor:pointer;
+z-index:1000;
+}
 </style>
 </head>
 <body>
 
 <header id="storeName">متجري الاحترافي</header>
+
+<!-- زر المالك -->
+<div id="adminBtn" onclick="adminLogin()">لوحة المالك</div>
 
 <div class="products" id="products"></div>
 
@@ -100,14 +114,15 @@ background:red;
 </div>
 
 <script>
-
 let password = "112211";
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
+// حفظ البيانات
 function save(){
 localStorage.setItem("products",JSON.stringify(products));
 }
 
+// عرض المنتجات
 function render(){
 let container=document.getElementById("products");
 container.innerHTML="";
@@ -123,6 +138,7 @@ container.innerHTML+=`
 });
 }
 
+// إضافة منتج
 function addProduct(){
 let name=document.getElementById("pName").value;
 let price=document.getElementById("pPrice").value;
@@ -135,11 +151,45 @@ render();
 }
 }
 
+// إرسال طلب
 function order(name,price){
 let msg=`طلب جديد:%0A${name} - ${price} ريال`;
 window.location.href="https://t.me/aa5c_q?text="+msg;
 }
 
+// تغيير اسم المتجر
 function changeStoreName(){
 let newName=document.getElementById("newStoreName").value;
-if(
+if(newName){
+document.getElementById("storeName").innerText=newName;
+}
+}
+
+// تغيير الخلفية
+function changeBG(){
+let color=document.getElementById("bgColor").value;
+if(color){
+document.body.style.background=color;
+}
+}
+
+function closeAdmin(){
+document.getElementById("adminPanel").style.display="none";
+}
+
+// فتح لوحة التحكم بكلمة السر
+function adminLogin(){
+let pass = prompt("ادخل كلمة مرور المالك");
+if(pass === password){
+document.getElementById("adminPanel").style.display="block";
+}else{
+alert("كلمة مرور خاطئة");
+}
+
+}
+
+render();
+</script>
+
+</body>
+</html>
